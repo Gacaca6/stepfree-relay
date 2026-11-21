@@ -23,7 +23,9 @@ Open `http://127.0.0.1:8700` in a current browser. The engine and routing both r
 2. Mark Union as in service. The shorter route returns.
 3. Reset to the Union outage, then mark Civic's street elevator as out of service or unconfirmed. The clinic has no confirmed step-free route. The recovery panel shows that restoring or confirming Civic alone would reopen the route through Riverside. Switch to East Library to see a journey that does not depend on the Civic elevator.
 
-## How the graph works
+## How it uses Relate
+
+Relate runs in memory inside each browser tab. The fictional network is seeded from `src/network.js` by `src/graph.js` on load, so there is no persistent graph file or directory to supply. The demo shows the seeded graph through its computed routes.
 
 Stops and station levels are Relate nodes. Each directed path segment stores the walking or travel time, instructions, whether it is step-free, and the elevator it requires, if applicable. Cypher enumerates candidate paths, removes those with stairs or unavailable elevators, and ranks the remainder by total travel time. The same query with every elevator available supplies the baseline. The app can then name the exact assets that invalidate the usual path.
 
