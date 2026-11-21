@@ -21,11 +21,13 @@ Open `http://127.0.0.1:8700` in a current browser. The engine and routing both r
 
 1. Start with the Union transfer elevator out of service. Civic Clinic takes 25 minutes through Riverside. Open the route comparison to see the 18-minute route that normally uses Union.
 2. Mark Union as in service. The shorter route returns.
-3. Mark Civic's street elevator as out of service or unconfirmed. The clinic no longer has a confirmed step-free route. Switch to East Library to see a journey that does not depend on the Civic elevator.
+3. Reset to the Union outage, then mark Civic's street elevator as out of service or unconfirmed. The clinic has no confirmed step-free route. The recovery panel shows that restoring or confirming Civic alone would reopen the route through Riverside. Switch to East Library to see a journey that does not depend on the Civic elevator.
 
 ## How the graph works
 
 Stops and station levels are Relate nodes. Each directed path segment stores the walking or travel time, instructions, whether it is step-free, and the elevator it requires, if applicable. Cypher enumerates candidate paths, removes those with stairs or unavailable elevators, and ranks the remainder by total travel time. The same query with every elevator available supplies the baseline. The app can then name the exact assets that invalidate the usual path.
+
+If no route is confirmed, a separate query mode allows candidate step-free paths with unavailable elevators and ranks them by the fewest distinct elevators that need restoring or confirming. Estimated travel time breaks ties. The result is shown as a recovery plan.
 
 The demo uses Relate's browser WebAssembly package, version 1.2.0. It does not require a model, credentials, external databases, or network calls after the static files load. The transit graph, app, and tests were built with coding assistance from OpenAI Codex. The synthetic data carries no live operational information.
 

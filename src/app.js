@@ -56,7 +56,7 @@ function renderReport(graph) {
   const unavailable = Array.from(selectors, ([id, select]) => select.value === 'open' ? null : id)
     .filter(Boolean);
   try {
-    const { baseline, current, blockedBy, addedMinutes } = graph.compare(destination.value, unavailable);
+    const { baseline, current, recovery, blockedBy, addedMinutes } = graph.compare(destination.value, unavailable);
     const extra = addedMinutes > 0 ? `+${addedMinutes} min vs. all elevators in service` : 'Fastest step-free route';
     const summary = element('div', null, `summary${current ? '' : ' warning'}`);
     summary.append(element('strong', current ? `${current.minutes} min · Step-free` : 'No confirmed step-free route'));
@@ -72,8 +72,20 @@ function renderReport(graph) {
       report.append(element('p', `The usual route depends on ${items.join(' and ')}.`, 'finding'));
     }
     if (current) report.append(renderSteps(current));
-    if (!current) {
-      report.append(element('p', 'Check elevator status or choose a different destination.', 'finding'));
+    if (!current && recovery) {
+      const tasks = recovery.unavailableAssets.map((id) => {
+        const assetName = assets.find((candidate) => candidate.id === id).name;
+        return selectors.get(id).value === 'outage'
+          ? `Restore the ${assetName}`
+          : `Confirm that the ${assetName} is in service`;
+      });
+      const recoveryPlan = element('section', null, 'recovery');
+      recoveryPlan.append(element('h3', 'What would restore access'));
+      recoveryPlan.append(element('p', `A ${recovery.minutes}-minute route would become available with these changes.`));
+      const taskList = document.createElement('ul');
+      for (const task of tasks) taskList.append(element('li', task));
+      recoveryPlan.append(taskList);
+      report.append(recoveryPlan);
     }
     if (baseline && blockedBy.length) {
       const comparison = document.createElement('details');

@@ -84,6 +84,11 @@ button:disabled, select:disabled { opacity: 0.6; cursor: not-allowed; }
 .summary strong { font-size: 1.25rem; }
 .summary span { margin-left: auto; }
 .finding { margin: 1rem 0; line-height: 1.5; }
+.recovery { margin: 1rem 0; background: var(--paper); border-inline-start: 3px solid var(--green); padding: 0.85rem 1rem; }
+.recovery h3, .recovery p { margin: 0; }
+.recovery p { margin-top: 0.4rem; color: var(--muted); }
+.recovery ul { margin: 0.55rem 0 0; padding-inline-start: 1.25rem; }
+.recovery li + li { margin-top: 0.35rem; }
 details { margin-top: 1rem; }
 summary { cursor: pointer; font-weight: 600; color: var(--green); padding: 0.45rem 0; }
 .steps { list-style: none; margin: 1.4rem 0 0 0.33rem; padding: 0; }

@@ -31,3 +31,10 @@ test('a Civic outage ends clinic routing without offering stairs or blocking the
   assert.deepEqual(result.blockedBy, ['CV-03']);
   assert.equal(graph.compare('library', ['CV-03']).current.minutes, 14);
 });
+
+test('the recovery plan minimizes affected elevators before comparing travel times', () => {
+  const { current, recovery } = graph.compare('clinic', ['CV-03', 'UN-02']);
+  assert.equal(current, undefined);
+  assert.deepEqual(recovery.unavailableAssets, ['CV-03']);
+  assert.equal(recovery.minutes, 25);
+});

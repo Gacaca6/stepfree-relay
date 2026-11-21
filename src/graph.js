@@ -4,15 +4,19 @@ export const routeQuery = `
 MATCH path = (start:Stop)-[:STEP*1..6]->(finish:Stop)
 WHERE start.id = $from AND finish.id = $to
   AND all(step IN relationships(path) WHERE step.stepFree)
-  AND none(step IN relationships(path) WHERE step.asset IN $unavailable)
 WITH nodes(path) AS stops, relationships(path) AS segments
 WITH [stop IN stops | stop.name] AS stops,
      [step IN segments | step.guide] AS guide,
      [step IN segments | step.asset] AS assets,
      [step IN segments | step.minutes] AS segmentMinutes,
      reduce(total = 0, step IN segments | total + step.minutes) AS minutes
-RETURN stops, guide, assets, segmentMinutes, minutes
-ORDER BY minutes, stops
+WITH stops, guide, assets, segmentMinutes, minutes,
+     reduce(missing = [], asset IN assets |
+       CASE WHEN asset IN $unavailable AND NOT (asset IN missing)
+            THEN missing + [asset] ELSE missing END) AS unavailableAssets
+WHERE $allowRecovery OR size(unavailableAssets) = 0
+RETURN stops, guide, assets, segmentMinutes, minutes, unavailableAssets
+ORDER BY size(unavailableAssets), minutes, stops
 LIMIT 1
 `;
 
@@ -39,13 +43,16 @@ export function createTransitGraph(db) {
 
   return {
     compare(to, unavailable) {
-      const baseline = execute(db, routeQuery, { from: 'cedar', to, unavailable: [] })[0];
-      const current = execute(db, routeQuery, { from: 'cedar', to, unavailable })[0];
+      const baseline = execute(db, routeQuery, { from: 'cedar', to, unavailable: [], allowRecovery: false })[0];
+      const current = execute(db, routeQuery, { from: 'cedar', to, unavailable, allowRecovery: false })[0];
+      const recovery = current ? undefined :
+        execute(db, routeQuery, { from: 'cedar', to, unavailable, allowRecovery: true })[0];
       const blockedBy = [...new Set(baseline?.assets.filter((asset) => unavailable.includes(asset)))];
 
       return {
         baseline,
         current,
+        recovery,
         blockedBy,
         addedMinutes: current && baseline ? current.minutes - baseline.minutes : null,
       };
