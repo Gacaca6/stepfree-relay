@@ -1,0 +1,116 @@
+:root {
+  color-scheme: light;
+  --paper: #f4f7ee;
+  --surface: #fffef8;
+  --ink: #142d25;
+  --muted: #456153;
+  --line: #adbdad;
+  --green: #185b43;
+  --route: #197251;
+  --signal: #f9d477;
+  --signal-text: #3b260c;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, select { font: inherit; }
+a { color: var(--green); text-underline-offset: 0.2em; }
+:focus-visible { outline: 3px solid #ae540e; outline-offset: 3px; }
+
+.masthead {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  padding: 1rem max(1.25rem, calc((100vw - 1160px) / 2));
+  background: var(--ink);
+  color: #e0ebd9;
+}
+.brand { color: white; font-weight: 700; font-size: 1.2rem; text-decoration: none; }
+main { width: min(1160px, calc(100% - 2.5rem)); margin: 0 auto; }
+.intro { margin: clamp(2rem, 5vw, 4.2rem) 0 2rem; }
+h1 {
+  margin: 0;
+  font: 600 clamp(2.7rem, 6vw, 5.6rem)/1.02 Georgia, serif;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+.intro p { margin: 0.7rem 0 0; color: var(--muted); font-size: 1.1rem; }
+.workspace { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.6fr); gap: 1rem; }
+.controls, .report { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: clamp(1.2rem, 3vw, 2rem); }
+h2 { font-size: 1.35rem; margin: 0 0 1.25rem; }
+.origin { margin: 0 0 1rem; color: var(--muted); }
+.origin strong { margin-left: 0.35rem; color: var(--ink); }
+label, legend { font-weight: 650; }
+select {
+  display: block;
+  width: 100%;
+  min-height: 2.75rem;
+  margin-top: 0.35rem;
+  padding: 0.45rem 2.25rem 0.45rem 0.65rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--green) 50%), linear-gradient(135deg, var(--green) 50%, transparent 50%);
+  background-position: right 1rem center, right 0.65rem center;
+  background-size: 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+}
+fieldset { margin: 1.45rem 0 1rem; padding: 0; border: 0; }
+legend { margin-bottom: 0.55rem; }
+.asset { border-top: 1px solid var(--line); padding: 0.75rem 0; }
+.asset label { display: block; }
+.asset p { margin: 0.14rem 0 0.35rem; color: var(--muted); font-size: 0.9rem; }
+button.secondary {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 5px;
+  border: 1px solid var(--green);
+  background: transparent;
+  color: var(--green);
+  cursor: pointer;
+}
+button.secondary:hover:not(:disabled) { background: #e2efe2; }
+button:disabled, select:disabled { opacity: 0.6; cursor: not-allowed; }
+.summary { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; border-radius: 6px; padding: 0.85rem 1rem; background: #e2efe2; }
+.summary.warning { background: var(--signal); color: var(--signal-text); }
+.summary strong { font-size: 1.25rem; }
+.summary span { margin-left: auto; }
+.finding { margin: 1rem 0; line-height: 1.5; }
+details { margin-top: 1rem; }
+summary { cursor: pointer; font-weight: 600; color: var(--green); padding: 0.45rem 0; }
+.steps { list-style: none; margin: 1.4rem 0 0 0.33rem; padding: 0; }
+.steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.2rem 0.8rem;
+  border-inline-start: 2px solid var(--route);
+  padding: 0 0 1.1rem 1.1rem;
+}
+.steps li:last-child { padding-bottom: 0.1rem; border-color: transparent; }
+.steps li::before {
+  content: "";
+  position: absolute;
+  inset: 0.32em auto auto -0.4rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: var(--route);
+}
+.steps p { margin: 0; line-height: 1.35; color: var(--muted); grid-column: 1 / -1; }
+.steps span { white-space: nowrap; color: var(--muted); }
+footer { margin: 1.6rem 0 2rem; color: var(--muted); }
+
+@media (max-width: 48rem) {
+  .workspace { grid-template-columns: 1fr; }
+  .masthead { min-height: 60px; }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "stepfree-relay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node --test src/graph.test.js"
+  },
+  "dependencies": {
+    "@relate/relate-wasm": "1.2.0"
+  }
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Compare step-free transit routes during simulated elevator outages.">
+    <title>StepFree Relay</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="masthead">
+      <a href="./" class="brand">StepFree Relay</a>
+      <span>Simulated transit network</span>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <h1 id="page-title">Plan a step-free detour</h1>
+        <p>See how an elevator outage changes a trip from Cedar Market.</p>
+      </section>
+      <div class="workspace">
+        <section class="controls" aria-labelledby="network-title">
+          <h2 id="network-title">Trip conditions</h2>
+          <p class="origin">From <strong>Cedar Market</strong></p>
+          <label for="destination">Destination</label>
+          <select id="destination" disabled></select>
+          <fieldset id="availability" disabled>
+            <legend>Station elevators</legend>
+            <div id="asset-controls"></div>
+          </fieldset>
+          <button id="reset" class="secondary" type="button" disabled>Reset demo</button>
+        </section>
+        <section class="report" aria-labelledby="report-title">
+          <h2 id="report-title">Route comparison</h2>
+          <div id="report" aria-live="polite" aria-busy="true">
+            <p>Loading the route graph…</p>
+          </div>
+        </section>
+      </div>
+      <footer>
+        <p>Fictional stops and travel times. Route calculations run in this browser with <a href="https://relatedb.ai/">Relate by Neo4j</a>.</p>
+      </footer>
+    </main>
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>
